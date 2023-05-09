@@ -100,18 +100,20 @@ namespace HelloWorld
 
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.UpArrow)) {
-                MoveForward();
-            }     
-            if(Input.GetKeyDown(KeyCode.DownArrow)) {
-                MoveBack();
-            }             
-            if(Input.GetKeyDown(KeyCode.LeftArrow)) {
-                MoveLeft();
-            }             
-            if(Input.GetKeyDown(KeyCode.RightArrow)) {
-                MoveRight();
-            }  
+            if(IsOwner) {
+                if(Input.GetKeyDown(KeyCode.UpArrow)) {
+                    MoveForward();
+                }     
+                if(Input.GetKeyDown(KeyCode.DownArrow)) {
+                    MoveBack();
+                }             
+                if(Input.GetKeyDown(KeyCode.LeftArrow)) {
+                    MoveLeft();
+                }             
+                if(Input.GetKeyDown(KeyCode.RightArrow)) {
+                    MoveRight();
+                }  
+            }
             transform.position = Position.Value;
             /*
             if(IsServer) {
