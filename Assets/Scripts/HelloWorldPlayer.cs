@@ -1,12 +1,22 @@
 using Unity.Netcode;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace HelloWorld
 {
     public class HelloWorldPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
-        public static float speed = 3f;
+        
+        [SerializeField]
+        private MeshRenderer meshRenderer;
+
+        public List<Color> colors = new List<Color>();
+
+        public void Awake() {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -14,6 +24,7 @@ namespace HelloWorld
             {
                 Move();
             }
+            meshRenderer.material.color = colors[(int)OwnerClientId];
         }
 
         public void Move()
@@ -86,7 +97,7 @@ namespace HelloWorld
             Position.Value += Vector3.right;
         }
 
-        //H-H
+        //Botón [Move]
         [ServerRpc]
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
