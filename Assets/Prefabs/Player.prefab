@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1631810537020353820}
   - component: {fileID: 7604666118431083769}
   - component: {fileID: -1980289906208208955}
-  - component: {fileID: 5145264744844135134}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -144,15 +143,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
---- !u!114 &5145264744844135134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631810537020353821}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df08f4c3195c28d4398d5bf7037c8d14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 1631810537020353822}
+  colors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.6273487, b: 0, a: 0}
+  - {r: 1, g: 0.95686066, b: 0, a: 0}
+  - {r: 0.28527856, g: 1, b: 0, a: 0}
+  - {r: 0, g: 1, b: 0.94610643, a: 0}
+  - {r: 0, g: 0.40600348, b: 1, a: 0}
+  - {r: 0.70732594, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0.48584908, b: 0.8226835, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}

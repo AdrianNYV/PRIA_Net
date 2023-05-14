@@ -1,34 +1,62 @@
 using Unity.Netcode;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace HelloWorld
 {
     public class HelloWorldPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
-        public static float speed = 3f;
+        
+        [SerializeField]
+        private MeshRenderer meshRenderer;
 
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
+        public NetworkVariable<int> PlayerIdColor;
+
+        public List<Color> colors = new List<Color>();
+
+        private void Start() {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
+
+        public override void OnNetworkSpawn() {
+            if (IsOwner) {
                 Move();
+                Colorized();
             }
         }
 
-        public void Move()
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                var randomPosition = GetRandomPositionOnPlane();
-                transform.position = randomPosition;
-                Position.Value = randomPosition;
-            }
-            else
-            {
-                SubmitPositionRequestServerRpc();
+        //Coloreador de jugadores
+        public void Colorized() {
+            int idForColor;
+            if (NetworkManager.Singleton.IsServer) {
+                idForColor = ColorAccept();
+                meshRenderer.material.color = colors[idForColor];
+                PlayerIdColor.Value = idForColor;
+            } else {
+                SumbitColorizedResquestServerRpc();
             }
         }
+
+        [ServerRpc]
+        void SumbitColorizedResquestServerRpc() {
+            int idForColor = ColorAccept();
+            PlayerIdColor.Value = idForColor;
+        }
+
+        int ColorAccept() {
+            int idColor;
+            bool sameColor;
+            List<int> colorsInUse = new List<int>();
+            foreach(ulong uid in NetworkManager.Singleton.ConnectedClientsIds) {
+                colorsInUse.Add(NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(uid).GetComponent<HelloWorldPlayer>().PlayerIdColor.Value);
+            } do {
+                idColor = Random.Range(0, colors.Count);
+                sameColor = colorsInUse.Contains(idColor);
+            } while (sameColor);
+            return idColor;
+        } 
 
         //Movimiento hacia delante
         public void MoveForward() {
@@ -86,20 +114,31 @@ namespace HelloWorld
             Position.Value += Vector3.right;
         }
 
-        //H-H
-        [ServerRpc]
-        void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
+        //Botón [Move] de Teleport del Player
+        public void Move()
         {
+            if (NetworkManager.Singleton.IsServer)
+            {
+                var randomPosition = GetRandomPositionOnPlane();
+                transform.position = randomPosition;
+                Position.Value = randomPosition;
+            }
+            else
+            {
+                SubmitPositionRequestServerRpc();
+            }
+        }
+
+        [ServerRpc]
+        void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default) {
             Position.Value = GetRandomPositionOnPlane();
         }
 
-        static Vector3 GetRandomPositionOnPlane()
-        {
+        static Vector3 GetRandomPositionOnPlane() {
             return new Vector3(Random.Range(-3f, 3f), 1f, Random.Range(-3f, 3f));
         }
 
-        void Update()
-        {
+        void Update(){
             if(IsOwner) {
                 if(Input.GetKeyDown(KeyCode.UpArrow)) {
                     MoveForward();
@@ -112,32 +151,17 @@ namespace HelloWorld
                 }             
                 if(Input.GetKeyDown(KeyCode.RightArrow)) {
                     MoveRight();
-                }  
+                } 
             }
             transform.position = Position.Value;
-            /*
-            if(IsServer) {
-                if(Input.GetKey(KeyCode.UpArrow)) {
-                    transform.position += speed * Vector3.forward * Time.deltaTime;
-                } 
-                
-                if(Input.GetKey(KeyCode.DownArrow)) {
-                    transform.position += speed * Vector3.back * Time.deltaTime;
-                } 
-                
-                if(Input.GetKey(KeyCode.LeftArrow)) {
-                    transform.position += speed * Vector3.left * Time.deltaTime;
-                } 
-                
-                if(Input.GetKey(KeyCode.RightArrow)) {
-                    transform.position += speed * Vector3.right * Time.deltaTime;
-                } 
-                
-                else {
-                    transform.position += Vector3.zero;
-                }
-            } 
-            */
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                Colorized();
+            }
+            //Comprobación para no hacer asignación de color en cada frame, sino cuando el valor cambie asignar el nuevo color
+            if (meshRenderer.material.color != colors[PlayerIdColor.Value]) {
+                meshRenderer.material.color = colors[PlayerIdColor.Value];
+            }
         }
     }
 }
