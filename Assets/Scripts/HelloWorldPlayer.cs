@@ -151,13 +151,15 @@ namespace HelloWorld
                 }             
                 if(Input.GetKeyDown(KeyCode.RightArrow)) {
                     MoveRight();
-                } 
+                }
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Colorized();
+                }
             }
             transform.position = Position.Value;
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                Colorized();
-            }
+            
             //Comprobación para no hacer asignación de color en cada frame, sino cuando el valor cambie asignar el nuevo color
             if (meshRenderer.material.color != colors[PlayerIdColor.Value]) {
                 meshRenderer.material.color = colors[PlayerIdColor.Value];
