@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1631810537020353823}
   - component: {fileID: 1631810537020353820}
   - component: {fileID: 7604666118431083769}
-  - component: {fileID: -1980289906208208955}
   - component: {fileID: 7499936850700505891}
   - component: {fileID: 5557749264777719844}
   m_Layer: 0
@@ -131,34 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d586825bf0e46e74d973a9af59833d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-1980289906208208955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631810537020353821}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa60d5f9adef05741a260496dbe21064, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  meshRenderer: {fileID: 1631810537020353822}
-  PlayerIdColor:
-    m_InternalValue: 0
-  colors:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0.6273487, b: 0, a: 0}
-  - {r: 1, g: 0.95686066, b: 0, a: 0}
-  - {r: 0.28527856, g: 1, b: 0, a: 0}
-  - {r: 0, g: 1, b: 0.94610643, a: 0}
-  - {r: 0, g: 0.40600348, b: 1, a: 0}
-  - {r: 0.70732594, g: 0, b: 1, a: 0}
-  - {r: 1, g: 0.48584908, b: 0.8226835, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &7499936850700505891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1931bbd509fbb494db241879560e46ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
 --- !u!54 &5557749264777719844
 Rigidbody:
   m_ObjectHideFlags: 0
