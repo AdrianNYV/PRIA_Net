@@ -11,8 +11,9 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
         if(IsServer) {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
+            float y = Input.GetAxis("Jump");
             
-            transform.position = transform.position + new Vector3(x, 0, z) * speed * Time.deltaTime;
+            transform.position = transform.position + new Vector3(x, y, z) * speed * Time.deltaTime;
         }
     }
 }
