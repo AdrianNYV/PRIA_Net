@@ -8,11 +8,20 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
 
     public void Jump() {
+        if(NetworkManager.Singleton.IsServer) {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+        } else {
+            JumpServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    void JumpServerRpc() {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
-    } 
+    }
 
     void Update() {
-        if(IsOwner) {
+        if(IsServer) {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
             if(Input.GetButtonDown("Jump")) {
