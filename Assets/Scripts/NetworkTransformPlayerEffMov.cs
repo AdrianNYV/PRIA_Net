@@ -6,14 +6,20 @@ using Unity.Netcode;
 
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
+    public float jumpForce;
+
+    public void Jump() {
+        GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+    } 
 
     void Update() {
-        if(IsServer) {
+        if(IsOwner) {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
-            float y = Input.GetAxis("Jump");
-            
-            transform.position = transform.position + new Vector3(x, y, z) * speed * Time.deltaTime;
+            if(Input.GetButtonDown("Jump")) {
+                Jump();
+            }
+            transform.position = transform.position + new Vector3(x, 0, z) * speed * Time.deltaTime;
         }
     }
 }

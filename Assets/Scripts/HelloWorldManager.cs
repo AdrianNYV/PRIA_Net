@@ -11,6 +11,7 @@ namespace HelloWorld {
                 StartButtons();
             } else {
                 StatusLabels();
+                SubmitJump();
             }
             GUILayout.EndArea();
         }
@@ -24,6 +25,14 @@ namespace HelloWorld {
             var mode = NetworkManager.Singleton.IsHost ? "Host" : "Client";
             GUILayout.Label("Transport: " + NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
             GUILayout.Label("Mode: " + mode);
+        }
+
+        static void SubmitJump() {
+            if (GUILayout.Button(NetworkManager.Singleton.IsServer ? "Jump" : "Request Jump")) { 
+                var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+                var player = playerObject.GetComponent<NetworkTransformPlayerEffMov>();
+                player.Jump();
+            }
         }
     }
 }
