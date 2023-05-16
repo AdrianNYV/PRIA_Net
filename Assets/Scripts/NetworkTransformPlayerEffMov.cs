@@ -6,7 +6,6 @@ using Unity.Netcode;
 
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
-    public float jumpForce;
 
     public void Jump() {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
