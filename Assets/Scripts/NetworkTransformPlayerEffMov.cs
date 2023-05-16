@@ -20,14 +20,28 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
     }
 
+    private void Move() {
+        if(NetworkManager.Singleton.IsServer) {
+            
+        } else {
+            MoveServerRpc();
+        }
+    } 
+
+    [ServerRpc]
+    void MoveServerRpc() {
+
+    }
+
     void Update() {
         if(IsServer) {
-            float x = Input.GetAxis("Horizontal");
-            float z = Input.GetAxis("Vertical");
+            if(Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) {
+                Move();
+            }
             if(Input.GetButtonDown("Jump")) {
                 Jump();
             }
-            transform.position = transform.position + new Vector3(x, 0, z) * speed * Time.deltaTime;
+            transform.position = transform.position + new Vector3(0, 0, 0) * speed * Time.deltaTime;
         }
     }
 }
