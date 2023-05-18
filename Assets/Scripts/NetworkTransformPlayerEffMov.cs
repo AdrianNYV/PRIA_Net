@@ -13,22 +13,22 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     }
 
     [ServerRpc]
-    void MoveRightServerRpc(Vector3 dirRight, ServerRpcParams rpcParams = default) {
+    void MoveRightServerRpc(Vector3 dirRight) {
         transform.position += dirRight * speed * Time.deltaTime;
     }
 
     [ServerRpc]
-    void MoveLeftServerRpc(Vector3 dirLeft, ServerRpcParams rpcParams = default) {
+    void MoveLeftServerRpc(Vector3 dirLeft) {
         transform.position += dirLeft * speed * Time.deltaTime;
     }
 
     [ServerRpc]
-    void MoveForwardServerRpc(Vector3 dirForward, ServerRpcParams rpcParams = default) {
+    void MoveForwardServerRpc(Vector3 dirForward) {
         transform.position += dirForward * speed * Time.deltaTime;
     }
 
     [ServerRpc]
-    void MoveBackServerRpc(Vector3 dirBack, ServerRpcParams rpcParams = default) {
+    void MoveBackServerRpc(Vector3 dirBack) {
         transform.position += dirBack * speed * Time.deltaTime;
     }
 
