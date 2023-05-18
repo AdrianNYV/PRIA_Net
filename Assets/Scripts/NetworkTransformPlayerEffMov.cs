@@ -6,7 +6,7 @@ using Unity.Netcode;
 
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
-
+    
     public void Jump() {
         if(NetworkManager.Singleton.IsServer) {
             GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
@@ -20,28 +20,43 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
     }
 
-    private void Move() {
-        if(NetworkManager.Singleton.IsServer) {
-            
-        } else {
-            MoveServerRpc();
-        }
-    } 
+    [ServerRpc]
+    void MoveRightServerRpc(Vector3 dirRight, ServerRpcParams rpcParams = default) {
+        transform.position += dirRight * speed * Time.deltaTime;
+    }
 
     [ServerRpc]
-    void MoveServerRpc() {
+    void MoveLeftServerRpc(Vector3 dirLeft, ServerRpcParams rpcParams = default) {
+        transform.position += dirLeft * speed * Time.deltaTime;
+    }
 
+    [ServerRpc]
+    void MoveForwardServerRpc(Vector3 dirForward, ServerRpcParams rpcParams = default) {
+        transform.position += dirForward * speed * Time.deltaTime;
+    }
+
+    [ServerRpc]
+    void MoveBackServerRpc(Vector3 dirBack, ServerRpcParams rpcParams = default) {
+        transform.position += dirBack * speed * Time.deltaTime;
     }
 
     void Update() {
-        if(IsServer) {
-            if(Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) {
-                Move();
+        if(IsOwner) {
+            if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
+                MoveRightServerRpc(Vector3.right);
+            }
+            if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
+                MoveLeftServerRpc(Vector3.left);
+            }
+            if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
+                MoveForwardServerRpc(Vector3.forward);
+            }
+            if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) {
+                MoveBackServerRpc(Vector3.back);
             }
             if(Input.GetButtonDown("Jump")) {
-                Jump();
+                JumpServerRpc();
             }
-            transform.position = transform.position + new Vector3(0, 0, 0) * speed * Time.deltaTime;
         }
     }
 }
