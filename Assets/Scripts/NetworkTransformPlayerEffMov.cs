@@ -6,14 +6,6 @@ using Unity.Netcode;
 
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
-    
-    public void Jump() {
-        if(NetworkManager.Singleton.IsServer) {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
-        } else {
-            JumpServerRpc();
-        }
-    }
 
     [ServerRpc]
     void JumpServerRpc() {
