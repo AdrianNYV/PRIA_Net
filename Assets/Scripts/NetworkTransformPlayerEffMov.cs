@@ -5,7 +5,7 @@ using System;
 using Unity.Netcode;
 
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
-    public float speed = 5f;
+    public float speed = 4f;
 
     private float buffAndDebuff = 1f;
 
@@ -21,8 +21,8 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     }
 
     [ServerRpc]
-    void MoveServerRpc(Vector3 dir) {
-        transform.position += dir * speed * Time.deltaTime;
+    void MoveServerRpc(Vector3 dir, float bd) {
+        transform.position += dir * (speed + bd) * Time.deltaTime;
     }
 
     [ClientRpc]
@@ -46,16 +46,16 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     void Update() {
         if(IsOwner) {
             if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
-                MoveServerRpc(Vector3.right);
+                MoveServerRpc(Vector3.right, buffAndDebuff);
             }
             if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
-                MoveServerRpc(Vector3.left);
+                MoveServerRpc(Vector3.left, buffAndDebuff);
             }
             if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
-                MoveServerRpc(Vector3.forward);
+                MoveServerRpc(Vector3.forward, buffAndDebuff);
             }
             if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) {
-                MoveServerRpc(Vector3.back);
+                MoveServerRpc(Vector3.back, buffAndDebuff);
             }
             if(Input.GetButtonDown("Jump")) {
                 JumpServerRpc();

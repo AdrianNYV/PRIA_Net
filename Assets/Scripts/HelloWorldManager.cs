@@ -7,8 +7,8 @@ namespace HelloWorld {
     public class HelloWorldManager : MonoBehaviour {
         private List<NetworkClient> listOfClientsIds = new List<NetworkClient>();
 
-        private float buff = 2.5f;
-        private float debuff = 0.5f;
+        private float buff = 4.5f;
+        private float debuff = -2f;
         private float durationOffBD = 10f;
 
         private bool gameOver = false;
@@ -43,7 +43,6 @@ namespace HelloWorld {
 
         IEnumerator BuffDebuff() {
             while(!gameOver) {
-                Debug.Log("Comienzo de la corutina");
                 yield return new WaitForSeconds(20f);
 
                 listOfClientsIds = new List<NetworkClient>();
