@@ -7,6 +7,12 @@ using Unity.Netcode;
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
 
+    private MeshRenderer meshRenderer; 
+
+    void Awake() {
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
+
     [ServerRpc]
     void JumpServerRpc() {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
@@ -16,6 +22,11 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     void MoveServerRpc(Vector3 dir) {
         transform.position += dir * speed * Time.deltaTime;
     }
+
+    [ClientRpc]
+    public void BuffOrDebuffClientRpc(float speed, float duration, Color color) {
+
+    } 
 
     void Update() {
         if(IsOwner) {

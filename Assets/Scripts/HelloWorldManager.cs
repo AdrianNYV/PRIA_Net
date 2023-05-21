@@ -23,28 +23,43 @@ namespace HelloWorld {
             GUILayout.EndArea();
         }
 
-        static void StartButtons() {
+        void StartButtons() {
             if (GUILayout.Button("Host")) {
                 NetworkManager.Singleton.StartHost();
-                StartCoroutine("IHopeYouFeelLuckyToday");
+                StartCoroutine(BuffDebuff());
             }
             if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
             if (GUILayout.Button("Server")) {
                 NetworkManager.Singleton.StartServer();
-                StartCoroutine("IHopeYouFeelLuckyToday");
+                StartCoroutine(BuffDebuff());
             }
         }
 
-        static void StatusLabels() {
+        void StatusLabels() {
             var mode = NetworkManager.Singleton.IsHost ? "Host" : NetworkManager.Singleton.IsServer ? "Server" : "Client";
             GUILayout.Label("Transport: " + NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
             GUILayout.Label("Mode: " + mode);
         }
 
-        IEnumerator IHopeYouFeelLuckyToday() {
+        IEnumerator BuffDebuff() {
             while(!gameOver) {
-                Debug.Log("Comienzo de Corutina");
+                Debug.Log("Comienzo de la corutina");
                 yield return new WaitForSeconds(20f);
+
+                listOfClientsIds = new List<NetworkClient>();
+                foreach(NetworkClient uid in NetworkManager.Singleton.ConnectedClientsList) {
+                    listOfClientsIds.Add(uid);
+                }
+
+                int buffOrDebuff;
+                buffOrDebuff = Random.Range(0, 2);
+                int choosenClientId;
+                choosenClientId = Random.Range(0, listOfClientsIds.Count);
+                if(buffOrDebuff == 0) {
+                    listOfClientsIds[choosenClientId].PlayerObject.GetComponent<NetworkTransformPlayerEffMov>().BuffOrDebuffClientRpc(buff, durationOffBD, Color.green);
+                } else if(buffOrDebuff == 1) {
+                    listOfClientsIds[choosenClientId].PlayerObject.GetComponent<NetworkTransformPlayerEffMov>().BuffOrDebuffClientRpc(debuff, durationOffBD, Color.red);
+                }
             }
         }
     }
