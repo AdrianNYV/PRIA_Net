@@ -7,6 +7,8 @@ using Unity.Netcode;
 public class NetworkTransformPlayerEffMov : NetworkBehaviour {
     public float speed = 5f;
 
+    private float buffAndDebuff = 1f;
+
     private MeshRenderer meshRenderer; 
 
     void Awake() {
@@ -25,8 +27,21 @@ public class NetworkTransformPlayerEffMov : NetworkBehaviour {
 
     [ClientRpc]
     public void BuffOrDebuffClientRpc(float speed, float duration, Color color) {
-
+        StartCoroutine(BuffOrDebuffCoroutine(speed, duration, color));
     } 
+
+    IEnumerator BuffOrDebuffCoroutine(float speed, float duration, Color color) {
+        float buffAndDebuffOriginal = this.buffAndDebuff;
+        this.buffAndDebuff = speed;
+
+        Color colorOriginal = meshRenderer.material.color;
+        meshRenderer.material.color = color;
+
+        yield return new WaitForSeconds(duration);
+
+        this.buffAndDebuff = buffAndDebuffOriginal;
+        meshRenderer.material.color = colorOriginal;
+    }
 
     void Update() {
         if(IsOwner) {
